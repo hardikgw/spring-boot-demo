@@ -1,9 +1,12 @@
-FROM maven:3.5.4-jdk-8-alpine AS maven-build
-WORKDIR /app
-add . /app
+FROM maven:3.6.0-jdk-11-slim AS maven-build
+RUN apt-get update && \
+    apt-get install git-all -y
+RUN git clone https://github.com/hardikgw/spring-boot-demo.git
+RUN mkdir /app &&\
+    cp -r /spring-boot-demo/* /app
 RUN cd /app && mvn install
 
-FROM java:8u111-jre-alpine
+FROM openjdk:11-jre-slim
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY --from=maven-build /app/target/*.jar /app
