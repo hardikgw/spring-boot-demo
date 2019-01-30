@@ -7,9 +7,8 @@ RUN mkdir /app &&\
 RUN cd /app && mvn install
 
 FROM openjdk:11-jre-slim
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY --from=maven-build /app/target/*.jar /app
 
 EXPOSE 8080
-ENTRYPOINT java -jar batch-demo-1.1.2-RELEASE.jar
+ENTRYPOINT java -jar demo-0.0.1-SNAPSHOT.jar
